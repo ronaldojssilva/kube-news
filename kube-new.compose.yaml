@@ -1,0 +1,24 @@
+services:
+  kube_news:
+      container_name: kube_news_app
+      # deixando o parametro da tag como opcional :-latest
+      image: ronaldojssilva/kube-news:${KUBE_NEWS_TAG:-latest}
+      build:
+        context: ./src
+        dockerfile: Dockerfile
+      ports:
+        - 8080:8080
+      networks:
+            - kube_news_net
+      environment:
+        DB_PASSWORD: ${POSTGRES_PASSWORD}
+        DB_USERNAME: ${POSTGRES_USER}
+        DB_DATABASE:  ${POSTGRES_DB}
+        DB_HOST: postgres
+      depends_on:
+        - postgres
+      volumes:
+        - teste_vol:/teste
+
+volumes:
+  teste_vol:
